@@ -1,0 +1,13 @@
+Type game(row, column) and watch the magic happen!
+
+1. Start
+     Print empty game board and [player 1 name]'s turn
+2. Repetitive process
+     Player types game(row, column)
+     Update board object
+     Check for 3 in a row to end game
+     Switch player turn
+     Print updated board
+3. End
+     Don't allow player to input anymore
+     Print [player name] wins!

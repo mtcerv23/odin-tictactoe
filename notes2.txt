@@ -1,0 +1,57 @@
+How to play (console version):
+type playRound(row, column)
+
+GAME LOGIC:
+-----------
+Player 1 (X) goes first
+Choose a row and column (e.g. [1][1], the middle)
+Place an X or O
+  If there is already an X or O, skip player's turn
+  If there are 3 in a row after this, end the game and declare current player the winner
+  Switch player turn
+
+DISPLAY:
+--------
+Print current game board
+Print current player's turn
+
+  AFTER A MOVE INPUT:
+  -------------
+  Update game board object
+  Reprint game board
+  Print other player's turn
+  
+  IF 3 IN A ROW:
+  --------------
+  Print "Player [1/2] wins!"
+
+PLAYER INTERACTION:
+-------------------
+Only input a move. That's it. Display will tell you whose turn it is.
+
+GAME OBJECT:
+------------
+Board: array of 3 indices representing 3 rows, each containing an array of 3 indices representing 3 columns, each containing. This creates a 3x3 grid.
+
+Each board[row][column] is a cell that is an object containing two methods: addMark and getValue.
+
+Each cell gets initialized with 0 but can be changed to either X or O by addMark.
+
+
+OBJECTS:
+--------
+Gameboard (contains gameboard array)
+Players
+Game flow
+
+1. Player input module: the outermost interface
+  Display and feeding player input into the inner mechanisms
+Running the code:
+1. Call GameController factory and store in game object.
+2. Calling GameController also calls printNewRound inside, which shows initial blank game board
+   and that it is player 1's turn.
+3. Player types game.playRound(row, column).
+   Player gets shown "Player [getActivePlayer.name] places an [getActivePlayer.mark] on [row], [column]"
+   Call placeMark(row, column, getActivePlayer().mark);
+   Call switchPlayerTurn();
+   Call printNewRound(), which calls board.printBoard() and prints "[getActivePlayer().name]'s turn"
