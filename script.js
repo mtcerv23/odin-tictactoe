@@ -23,12 +23,10 @@ function Gameboard() {
         console.log(boardWithValues);
     }
 
-    const boardWithValues = board.map((row) => row.map((cell) => cell.getValue()));
-
     return {
         getBoard,
         placeMark,
-        printBoard
+        printBoard,
     }
 }
 
@@ -78,6 +76,11 @@ function GameController(playerOneName = "Player 1", playerTwoName = "Player 2") 
         console.log(`${getActivePlayer().name} placed an ${getActivePlayer().mark} on [${row}][${column}]`);
         board.placeMark(row, column, getActivePlayer().mark);
 
+        // win conditions here
+        // board starts at 0, so all conditions will apply at the beginning of the game.
+
+        const boardWithValues = board.getBoard().map((row) => row.map((cell) => cell.getValue()));
+        if (boardWithValues[0][0] === boardWithValues)
 
 
         switchPlayerTurn();
