@@ -72,6 +72,18 @@ function GameController(playerOneName = "Player 1", playerTwoName = "Player 2") 
         console.log(`${getActivePlayer().name}'s turn.`);
     }
 
+    let topRow;
+    let midRow;
+    let botRow;
+    let leftCol;
+    let midCol;
+    let rightCol;
+    let leftDiag;
+    let rightDiag;
+    let boardWithValues;
+    let winner;
+
+
     const playRound = (row, column) => {
         console.log(`${getActivePlayer().name} placed an ${getActivePlayer().mark} on [${row}][${column}]`);
         board.placeMark(row, column, getActivePlayer().mark);
@@ -79,38 +91,27 @@ function GameController(playerOneName = "Player 1", playerTwoName = "Player 2") 
         // win conditions here
         // Board starts at 0, so all conditions will apply at the beginning of the game. How to deal with this?
 
-        let boardWithValues = board.getBoard().map((row) => row.map((cell) => cell.getValue()));
-        console.log(boardWithValues);
+        boardWithValues = board.getBoard().map((row) => row.map((cell) => cell.getValue()));
 
-        let topRow = boardWithValues[0];
-        let midRow = boardWithValues[1];
-        let botRow = boardWithValues[2];
-        let leftCol = boardWithValues.map((row, index) => boardWithValues[index][0]);
-        let midCol = boardWithValues.map((row, index) => boardWithValues[index][1]);
-        let rightCol = boardWithValues.map((row, index) => boardWithValues[index][2]);
-        let leftDiag = [boardWithValues[0][0], boardWithValues[1][1], boardWithValues[2][2]];
-        let rightDiag = [boardWithValues[0][2], boardWithValues[1][1], boardWithValues[2][0]];
+        topRow = boardWithValues[0];
+        midRow = boardWithValues[1];
+        botRow = boardWithValues[2];
+        leftCol = [boardWithValues[0][0], boardWithValues[1][0], boardWithValues[2][0]];
+        midCol = [boardWithValues[0][1], boardWithValues[1][1], boardWithValues[2][1]];
+        rightCol = [boardWithValues[0][2], boardWithValues[1][2], boardWithValues[2][2]];
+        leftDiag = [boardWithValues[0][0], boardWithValues[1][1], boardWithValues[2][2]];
+        rightDiag = [boardWithValues[0][2], boardWithValues[1][1], boardWithValues[2][0]];
 
-        console.log(topRow);
-        console.log(midRow);
-        console.log(botRow);
-        console.log(leftCol);
-        console.log(midCol);
-        console.log(rightCol);
-        console.log(leftDiag);
-        console.log(rightDiag);
+        let winCombos = [topRow, midRow, botRow, leftCol, midCol, rightCol, leftDiag, rightDiag];
 
-        if (boardWithValues[0][0] === boardWithValues[0][1] === boardWithValues[0][2] ||
-            boardWithValues[0][0] === boardWithValues[0][1] === boardWithValues[0][2] ||
-            boardWithValues[0][0] === boardWithValues[0][1] === boardWithValues[0][2] ||
-            boardWithValues[0][0] === boardWithValues[0][1] === boardWithValues[0][2] ||
-            boardWithValues[0][0] === boardWithValues[0][1] === boardWithValues[0][2] ||
-            boardWithValues[0][0] === boardWithValues[0][1] === boardWithValues[0][2] ||
-            boardWithValues[0][0] === boardWithValues[0][1] === boardWithValues[0][2] ||
-            boardWithValues[0][0] === boardWithValues[0][1] === boardWithValues[0][2] ||
-            boardWithValues[0][0] === boardWithValues[0][1] === boardWithValues[0][2]
-            )
+        if (winCombos.find((combo) => combo[0] !== 0 && combo[0] === combo[1] && combo[0] === combo[2])) {
+            winner = activePlayer;
+        }
 
+        if (winner) {
+            console.log(`${winner.name} wins!`);
+            return;
+        }
 
         switchPlayerTurn();
         printNewRound();
