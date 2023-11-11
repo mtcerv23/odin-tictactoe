@@ -77,10 +77,39 @@ function GameController(playerOneName = "Player 1", playerTwoName = "Player 2") 
         board.placeMark(row, column, getActivePlayer().mark);
 
         // win conditions here
-        // board starts at 0, so all conditions will apply at the beginning of the game.
+        // Board starts at 0, so all conditions will apply at the beginning of the game. How to deal with this?
 
-        const boardWithValues = board.getBoard().map((row) => row.map((cell) => cell.getValue()));
-        if (boardWithValues[0][0] === boardWithValues)
+        let boardWithValues = board.getBoard().map((row) => row.map((cell) => cell.getValue()));
+        console.log(boardWithValues);
+
+        let topRow = boardWithValues[0];
+        let midRow = boardWithValues[1];
+        let botRow = boardWithValues[2];
+        let leftCol = boardWithValues.map((row, index) => boardWithValues[index][0]);
+        let midCol = boardWithValues.map((row, index) => boardWithValues[index][1]);
+        let rightCol = boardWithValues.map((row, index) => boardWithValues[index][2]);
+        let leftDiag = [boardWithValues[0][0], boardWithValues[1][1], boardWithValues[2][2]];
+        let rightDiag = [boardWithValues[0][2], boardWithValues[1][1], boardWithValues[2][0]];
+
+        console.log(topRow);
+        console.log(midRow);
+        console.log(botRow);
+        console.log(leftCol);
+        console.log(midCol);
+        console.log(rightCol);
+        console.log(leftDiag);
+        console.log(rightDiag);
+
+        if (boardWithValues[0][0] === boardWithValues[0][1] === boardWithValues[0][2] ||
+            boardWithValues[0][0] === boardWithValues[0][1] === boardWithValues[0][2] ||
+            boardWithValues[0][0] === boardWithValues[0][1] === boardWithValues[0][2] ||
+            boardWithValues[0][0] === boardWithValues[0][1] === boardWithValues[0][2] ||
+            boardWithValues[0][0] === boardWithValues[0][1] === boardWithValues[0][2] ||
+            boardWithValues[0][0] === boardWithValues[0][1] === boardWithValues[0][2] ||
+            boardWithValues[0][0] === boardWithValues[0][1] === boardWithValues[0][2] ||
+            boardWithValues[0][0] === boardWithValues[0][1] === boardWithValues[0][2] ||
+            boardWithValues[0][0] === boardWithValues[0][1] === boardWithValues[0][2]
+            )
 
 
         switchPlayerTurn();
