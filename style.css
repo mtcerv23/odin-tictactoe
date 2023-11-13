@@ -1,0 +1,54 @@
+.turn {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 50px;
+}
+
+.board {
+    display: grid;
+    grid-template: 1fr 1fr 1fr / 1fr 1fr 1fr;
+    height: 500px;
+    width: 500px;
+    margin: auto;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.cell {
+    background: none;
+    border: 3px solid black;
+    border-top: none;
+    border-left: none;
+    cursor: pointer;
+    font-size: 5rem;
+}
+
+.cell:hover {
+    background-color: #b1b1b1;
+}
+
+.board .no-r {
+    border-right: none;
+}
+
+.board .no-b {
+    border-bottom: none;
+}
+
+#restart {
+    position: absolute;
+    font-size: 4rem;
+    justify-self: center;
+    right: 45%;
+    bottom: 10%;
+}
+
+.winner {
+    font-size: 5rem;
+    justify-self: center;
+    color: red;
+    margin: auto;
+    width: 50%;
+    text-align: center;
+}

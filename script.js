@@ -23,10 +23,19 @@ function Gameboard() {
         console.log(boardWithValues);
     }
 
+    const resetBoard = () => {
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < columns; j++) {
+                board[i][j].resetCell();
+            }
+        }
+    }
+
     return {
         getBoard,
         placeMark,
         printBoard,
+        resetBoard,
     }
 }
 
@@ -39,9 +48,14 @@ function Cell() {
         value = player;
     };
 
+    const resetCell = () => {
+        value = 0;
+    }
+
     return {
         getValue,
-        addMark
+        addMark,
+        resetCell,
     };
 }
 
@@ -83,7 +97,7 @@ function GameController(playerOneName = "Player 1", playerTwoName = "Player 2") 
     let boardWithValues;
     let winner;
 
-    const getWinner = () => winner.name;
+    const getWinner = () => winner;
 
 
     const playRound = (row, column) => {
@@ -92,8 +106,7 @@ function GameController(playerOneName = "Player 1", playerTwoName = "Player 2") 
         board.placeMark(row, column, getActivePlayer().mark);
         console.log(`${getActivePlayer().name} placed an ${getActivePlayer().mark} on [${row}][${column}]`);
 
-        // win conditions here
-        // Board starts at 0, so all conditions will apply at the beginning of the game. How to deal with this?
+        // win conditions
 
         boardWithValues = board.getBoard().map((row) => row.map((cell) => cell.getValue()));
         // console.log(boardWithValues);
@@ -122,6 +135,7 @@ function GameController(playerOneName = "Player 1", playerTwoName = "Player 2") 
             console.log(`${winner.name} wins!`);
             return;
         } else if (boardIsFilled) {
+            winner = 'tie';
             console.log('It\'s a tie!');
             return;
         }
@@ -130,16 +144,82 @@ function GameController(playerOneName = "Player 1", playerTwoName = "Player 2") 
         printNewRound();
     }
 
+    const resetGame = () => {
+        winner = null;
+        activePlayer = players[0];
+        board.resetBoard();
+    }
+
     printNewRound();
 
     return {
         playRound,
         getActivePlayer,
-        getWinner
+        getWinner,
+        resetGame,
+        getBoard: board.getBoard,
     };
 }
 
-const game = GameController();
+function ScreenController() {
+    const game = GameController();
+    const playerTurnDiv = document.querySelector('.turn');
+    const boardDiv = document.querySelector('.board');
+    const winnerDiv = document.querySelector('.winner');
+    const restart = document.getElementById('restart');
+
+    const updateScreen = () => {
+        boardDiv.textContent = "";
+        winnerDiv.textContent = "";
+
+        const board = game.getBoard();
+        const activePlayer = game.getActivePlayer();
+
+        playerTurnDiv.textContent = `${activePlayer.name}'s turn`;
+
+        board.forEach((row, rowIndex) => {
+            row.forEach((cell, colIndex) => {
+                const cellButton = document.createElement("button");
+                cellButton.classList.add("cell");
+                if (colIndex == 2) cellButton.classList.add('no-r');
+                if (rowIndex == 2) cellButton.classList.add('no-b');
+                cellButton.dataset.column = colIndex;
+                cellButton.dataset.row = rowIndex;
+                if (cell.getValue() != 0) cellButton.textContent = cell.getValue();
+                boardDiv.appendChild(cellButton);
+            })
+        });
+
+        let winner = game.getWinner();
+        
+        if (winner) {
+            if (winner === 'tie') {
+                winnerDiv.textContent = 'It\'s a tie!';
+            } else winnerDiv.textContent = `${winner.name} wins!`
+        }
+    }
+
+    function clickHandlerBoard(e) {
+        const selectedColumn = e.target.dataset.column;
+        const selectedRow = e.target.dataset.row;
+
+        if (!selectedColumn) return;
+
+        game.playRound(selectedRow, selectedColumn);
+        updateScreen();
+    }
+    
+    boardDiv.addEventListener("click", clickHandlerBoard);
+
+    restart.addEventListener("click", () => {
+        game.resetGame();
+        updateScreen();
+    });
+
+    updateScreen();
+}
+
+ScreenController();
 
 // Tie
 // game.playRound(0,0);
@@ -154,15 +234,15 @@ const game = GameController();
 
 
 // Player 1 win, filled board
-game.playRound(0,0);
-game.playRound(0,1);
-game.playRound(0,2);
-game.playRound(1,1);
-game.playRound(1,0);
-game.playRound(1,2);
-game.playRound(2,1);
-game.playRound(2,2);
-game.playRound(2,0);
+// game.playRound(0,0);
+// game.playRound(0,1);
+// game.playRound(0,2);
+// game.playRound(1,1);
+// game.playRound(1,0);
+// game.playRound(1,2);
+// game.playRound(2,1);
+// game.playRound(2,2);
+// game.playRound(2,0);
 
 // Player 1 win, fastest
 // game.playRound(0,0);
