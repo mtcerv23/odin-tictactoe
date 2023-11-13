@@ -83,15 +83,20 @@ function GameController(playerOneName = "Player 1", playerTwoName = "Player 2") 
     let boardWithValues;
     let winner;
 
+    const getWinner = () => winner.name;
+
 
     const playRound = (row, column) => {
-        console.log(`${getActivePlayer().name} placed an ${getActivePlayer().mark} on [${row}][${column}]`);
+        if (winner) return;
+
         board.placeMark(row, column, getActivePlayer().mark);
+        console.log(`${getActivePlayer().name} placed an ${getActivePlayer().mark} on [${row}][${column}]`);
 
         // win conditions here
         // Board starts at 0, so all conditions will apply at the beginning of the game. How to deal with this?
 
         boardWithValues = board.getBoard().map((row) => row.map((cell) => cell.getValue()));
+        // console.log(boardWithValues);
 
         topRow = boardWithValues[0];
         midRow = boardWithValues[1];
@@ -108,8 +113,16 @@ function GameController(playerOneName = "Player 1", playerTwoName = "Player 2") 
             winner = activePlayer;
         }
 
+        // Find a cell with a value of zero. If there is one, don't do anything. If there aren't any, log "It's a tie!"
+        let boardIsFilled = !boardWithValues.find((row) => row.includes(0) === true);
+        // console.log(`boardIsFilled = ${boardIsFilled}`);
+
         if (winner) {
+            board.printBoard();
             console.log(`${winner.name} wins!`);
+            return;
+        } else if (boardIsFilled) {
+            console.log('It\'s a tie!');
             return;
         }
 
@@ -121,9 +134,47 @@ function GameController(playerOneName = "Player 1", playerTwoName = "Player 2") 
 
     return {
         playRound,
-        getActivePlayer
+        getActivePlayer,
+        getWinner
     };
 }
 
 const game = GameController();
 
+// Tie
+// game.playRound(0,0);
+// game.playRound(0,1);
+// game.playRound(0,2);
+// game.playRound(1,1);
+// game.playRound(1,0);
+// game.playRound(2,0);
+// game.playRound(1,2);
+// game.playRound(2,2);
+// game.playRound(2,1);
+
+
+// Player 1 win, filled board
+game.playRound(0,0);
+game.playRound(0,1);
+game.playRound(0,2);
+game.playRound(1,1);
+game.playRound(1,0);
+game.playRound(1,2);
+game.playRound(2,1);
+game.playRound(2,2);
+game.playRound(2,0);
+
+// Player 1 win, fastest
+// game.playRound(0,0);
+// game.playRound(0,0);
+// game.playRound(1,0);
+// game.playRound(1,0);
+// game.playRound(2,0);
+
+// Player 2 win, fastest
+// game.playRound(0,0);
+// game.playRound(0,1);
+// game.playRound(0,0);
+// game.playRound(1,1);
+// game.playRound(0,0);
+// game.playRound(2,1);
